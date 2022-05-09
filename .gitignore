@@ -1,0 +1,4 @@
+.vs/
+BugTracer.Frontend.Blazor/bin/
+BugTracer/obj/
+BugTracer.Frontend.Blazor.sln
