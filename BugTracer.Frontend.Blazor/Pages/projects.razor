@@ -1,11 +1,12 @@
 ﻿@page "/projects"
 @inject HttpClient http
+@inject NavigationManager navigationManager
 
 @using BugTracer.Api.Dtos
 
 
 
-<h3>projects</h3>
+<h3>Projects list</h3>
 
 <div class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
     <table class="table table-striped border table-hover">
@@ -16,13 +17,14 @@
             <th> CreatedBy</th>
         </tr>
         <tbody>
-             @foreach(var project in @Projects)
+             @foreach(var project in @projects)
             {
                 <tr>
                     <td>@project.Name</td>
                     <td>@project.Description</td>
                     <td>@project.CreatedOn</td>
                     <td>@project.CreatedBy</td>
+                    <td><button class="btn btn-dark" @onclick="@(() => RedirectToProjectDetails(project.Id))">Details</button> </td>
                 </tr>
             }
         </tbody>
@@ -31,6 +33,25 @@
 
 
 @code {
-    List<ProjectBasicReadDto> Projects = new List<ProjectBasicReadDto>();
+    List<ProjectBasicReadDto> projects = new List<ProjectBasicReadDto>();
+
+    /*
+    private async Task GetProjects()
+        {
+        projects = await http.GetFromJsonAsync<List<ProjectBasicReadDto>>("http://localhost:6001/api/projects");
+    }
+    */
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await http.GetFromJsonAsync<List<ProjectBasicReadDto>>("http://localhost:6001/api/projects");
+    }
+
+    void RedirectToProjectDetails(int projectId)
+    {
+        navigationManager.NavigateTo("/project/" + projectId, true);
+    }
+
 
 }
