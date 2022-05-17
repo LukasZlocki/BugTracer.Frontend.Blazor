@@ -1,0 +1,90 @@
+﻿@page "/project/{id:int}"
+
+@inject HttpClient http
+
+@using BugTracer.Frontend.Blazor.ViewModels
+
+<h3>ProjectDetails @Id </h3>
+
+<h1>Project:</h1>
+<div class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
+    <table class="table table-striped border table-hover">
+        <tr>
+            <th>Name</th>
+            <th>Decription</th>
+            <th>Created On</th>
+            <th>CreatedBy</th>  
+            <th>ClosedOn</th>
+            <th>ClosedBy</th>
+        </tr>
+        <tbody>
+        @if (viewModel.ProjectBasicDataReadDto != null)
+            {
+                <tr>
+                    <td>@viewModel.ProjectBasicDataReadDto.Name</td>
+            <td>@viewModel.ProjectBasicDataReadDto.Description</td>
+            <td>@viewModel.ProjectBasicDataReadDto.CreatedOn</td>
+            <td>@viewModel.ProjectBasicDataReadDto.CreatedBy</td> 
+            <td>@viewModel.ProjectBasicDataReadDto.ClosedOn</td> 
+            <td>@viewModel.ProjectBasicDataReadDto.ClosedBy</td> 
+        </tr>
+        }
+        </tbody>
+    </table>
+
+    <h1>Tickets:</h1>
+    <div class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
+        <table class="table table-striped border table-hover">
+        <tr>
+            <th>Title</th>
+            <th>Decription</th>
+            <th>Created On</th>
+            <th>Created By</th>
+            <th>Closed On</th>
+            <th>Closed By</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Resource</th>
+        </tr>       
+        <tbody>
+                @if (viewModel.ProjectTicketsReadDto != null)
+                {
+                    @foreach (var ticket in viewModel.ProjectTicketsReadDto)
+                    {
+                        <tr>
+                            <td>@ticket.Title</td>
+                            <td>@ticket.Description</td>
+                            <td>@ticket.CreatedOn</td>
+                            <td>@ticket.CreatedBy</td>
+                            <td>@ticket.ClosedOn</td>
+                            <td>@ticket.ClosedBy</td>
+                            <td>@ticket.StatusId</td>
+                            <td>@ticket.PriorityId</td>
+                            <td>@ticket.ResourceId</td>
+                        </tr>
+                    }
+                }
+        </tbody>
+        </table>
+    </div>
+
+
+</div> 
+
+
+@code {
+    // ToDo: load data from different endpoint like project details, task list
+
+    ProjectTicketsViewModel? viewModel = new ProjectTicketsViewModel();
+
+    [Parameter]
+    public int Id { get; set; }
+
+
+     protected override async Task OnInitializedAsync()
+    {
+        viewModel = await http.GetFromJsonAsync<ProjectTicketsViewModel>("http://localhost:6001/api/project/"+Id);
+        // ToDo: Zaladowac status / priorytet/ resource 
+    }
+
+}
