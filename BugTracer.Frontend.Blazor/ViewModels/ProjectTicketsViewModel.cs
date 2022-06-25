@@ -1,5 +1,6 @@
-﻿using BugTracer.Frontend.Blazor;
+﻿ using BugTracer.Frontend.Blazor;
 using BugTracer.Frontend.Blazor.DTOs;
+
 
 namespace BugTracer.Frontend.Blazor.ViewModels
 {

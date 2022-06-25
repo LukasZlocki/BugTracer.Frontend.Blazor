@@ -1,0 +1,51 @@
+﻿@page "/ticketdetails/{id:int}"
+
+@inject HttpClient http
+
+@using BugTracer.Frontend.Blazor.DTOs
+@using BugTracer.Frontend.Blazor.ViewModels
+
+<h3>ticketDetails @Id </h3>
+
+    <h1>Ticket:</h1>
+    <div class="border-bottom border-white shadow rounded-lg" style="background-color: #ededed">
+        <table class="table table-striped border table-hover">
+        <tr>
+            <th>Ticket Decription</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Resource</th>
+        </tr>       
+        <tbody>
+                @if (viewModel != null)
+                {
+                    <tr>
+                        <td>@viewModel.Ticket.Description</td>
+                        <td>@viewModel.TicketStatus.Status</td>
+                        <td>@viewModel.Priority.Priority</td>
+                        <td>@viewModel.Resource.FirstName</td>
+                    </tr>
+                }
+ 
+
+
+        </tbody>
+        </table>
+    </div>
+
+
+@code {
+
+    TicketDetailsVM viewModel;
+
+    [Parameter]
+    public int Id { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        viewModel = await http.GetFromJsonAsync<TicketDetailsVM>("http://localhost:6001/api/ticket/{id}"+Id);
+    }
+
+   
+}
